@@ -1,3 +1,4 @@
+import os
 import random
 import pyautogui
 import time
@@ -9,7 +10,7 @@ import pytz
 
 PIXEL_DISTANCE = 1
 INTERVAL_SECONDS = 60
-DISABLE_TIME = 17 #1700 pst
+DISABLE_TIME_HOURS = 17 #1700 pst
 
 
 
@@ -17,13 +18,14 @@ def is_working_hours():
   utc_now = datetime.now(pytz.utc)
   pst = pytz.timezone('America/Los_Angeles')
   pst_now = utc_now.astimezone(pst)
-  five_pm_pst = pst.localize(datetime(pst_now.year, pst_now.month, pst_now.day, DISABLE_TIME, 0, 0))
+  random_minute = random.randint(10, 60)
+  five_pm_pst = pst.localize(datetime(pst_now.year, pst_now.month, pst_now.day, DISABLE_TIME_HOURS, random_minute, 0))
 
   if pst_now < five_pm_pst:
-    print(f"It is {pst_now}. \nIt is not after 5 PM PST. \nRunning...\n")
+    print(f"It is {pst_now}. \nIt is not after {DISABLE_TIME_HOURS}:{random_minute} PST. \nRunning...\n")
     return True
   else:
-    print(f"It is {pst_now}. \nAfter {DISABLE_TIME}:00 PST. \nShutting Down...\n")
+    print(f"It is {pst_now}. \nAfter {DISABLE_TIME_HOURS}:{random_minute} PST. \nShutting Down...\n")
     return False
 
 
@@ -69,6 +71,9 @@ def get_current_mouse_location() -> tuple:
   mouse_y = mouse_location[1]
   return mouse_x, mouse_y
 
+
+def sleep_computer():
+  os.system("osascript -e 'tell application \"System Events\" to sleep'")
 
 
 if __name__ == "__main__":
