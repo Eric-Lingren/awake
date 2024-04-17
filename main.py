@@ -18,7 +18,7 @@ def is_working_hours():
   utc_now = datetime.now(pytz.utc)
   pst = pytz.timezone('America/Los_Angeles')
   pst_now = utc_now.astimezone(pst)
-  random_minute = random.randint(10, 60)
+  random_minute = random.randint(10, 59)
   five_pm_pst = pst.localize(datetime(pst_now.year, pst_now.month, pst_now.day, DISABLE_TIME_HOURS, random_minute, 0))
 
   if pst_now < five_pm_pst:
